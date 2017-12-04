@@ -1,0 +1,13 @@
+body {
+	background: #555555;
+	margin-top: 10px;
+}
+
+.gifButton {
+	margin: 0 5px;
+}
+
+.gifItem {
+	display: inline-block;
+	padding: 20px;
+}
