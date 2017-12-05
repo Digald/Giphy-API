@@ -17,6 +17,9 @@ $(document).ready(function() {
                 var rating = response.data[i].rating;
                 var p = $("<p>").text("Rating: " + rating);
                 var image = $("<img>");
+                // give the image two more data attributes
+                // set each of the attributes equal to one of the two links
+                // set the src equal to the data state just like in the click function at the bottom
                 image.addClass("gif");
                 image.attr("src", response.data[i].images.fixed_height.url);
                 gifDiv.append(p);
@@ -58,14 +61,15 @@ $(document).ready(function() {
     makeButtons();
 
     // change pause or play gif on click
-    // $(".gif").on("click"), function() {
-    //     var state = $(this).attr('data-state');
-    //     if (state === "still") {
-    //         $(this).attr("src", "data-animate");
-    //         $(this).attr("data-state", "animate");
-    //     } else {
-    //         $(this).attr("src", $(this).attr("data-still"));
-    //         $(this).attr("data-state", "still");
-    //     }
-    // } // of of pause gif
+    $(".gif").on("click"), function() {
+        var state = $(this).attr('data-state');
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+    } // of of pause gif
+
 }); // end of document ready
