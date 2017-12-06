@@ -2,29 +2,34 @@ $(document).ready(function() {
     var pokemonList = ["pichu", "lugia", "ho-oh", "raichu", "venusaur"];
 
     function displayGifs() {
-        var searchTerm = $(this).data("name");
+        var searchTerm = $(this).attr("data-name");
         console.log(searchTerm);
-        var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=" + searchTerm + "&limit=10";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=dc6zaTOxFJmzC&limit=10";
         $.ajax({
             url: queryURL,
             method: 'GET'
         }).done(function(response) {
-
             console.log(response);
             $("#gif-dump").empty();
-            for (var i = 0; response.data.length; i++) {
-                var gifDiv = $("<div class='gifItem'>");
-                var rating = response.data[i].rating;
-                var p = $("<p>").text("Rating: " + rating);
-                var image = $("<img>");
+
+            var results = response.data;
+            var gifDiv;
+            var rating;
+            var p;
+            var image;
+            for (var i = 0; results.length; i++) {
+                gifDiv = $("<div class='gifItem'>");
+                rating = results[i].rating;
+                p = $("<p>").text("Rating: " + rating);
+                image = $("<img>");
                 // give the image two more data attributes
                 // set each of the attributes equal to one of the two links
                 // set the src equal to the data state just like in the click function at the bottom
                 image.addClass("gif");
                 image.attr("data-state", "still");
-                image.attr("data-still", response.data[i].images.fixed_height_still.url);
-                image.attr("data-animate", response.data[i].images.fixed_height.url);
-                image.attr("src", response.data[i].images.fixed_height_still.url);
+                image.attr("data-still", results[i].images.fixed_height_still.url);
+                image.attr("data-animate", results[i].images.fixed_height.url);
+                image.attr("src", results[i].images.fixed_height_still.url);
                 gifDiv.append(p);
                 gifDiv.append(image);
 
@@ -58,38 +63,23 @@ $(document).ready(function() {
         // run the makeButton fucntion again so that the new search can show up too
         makeButtons();
     });
-
-    // whenever you click something with the class .gifButton, it runs the function to display gifs searched with the text in the button
-    $(document).on("click", ".gifButton", displayGifs);
-    makeButtons();
-
     // change pause or play gif on click
-    $(".gif").on("click",
-        function() {
-            var state = $(this).data('state');
-            console.log(state);
-            if (state === "still") {
-                $(this).attr("src", $(this).data("animate"));
-                $(this).attr("data-state", "animate");
-            } else {
-                $(this).attr("src", $(this).data("still"));
-                $(this).attr("data-state", "still");
-            }
-            console.log(state);
-        }); // end of of pause gif
+    function toggleGif() {
+        var state = $(this).attr('data-state');
+        console.log(state);
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+        console.log(state);
+    } // end of of pause gif
 
-    // $(".gif").on("click",
-    //     function() {
-    //         var state = $(this).attr('data-state');
-    //         console.log(state);
-    //         if (state === "still") {
-    //             $(this).attr("src", $(this).attr("data-animate"));
-    //             $(this).attr("data-state", "animate");
-    //         } else {
-    //             $(this).attr("src", $(this).attr("data-still"));
-    //             $(this).attr("data-state", "still");
-    //         }
-    //         console.log(state);
-    //     }); // end of of pause gif
+    // whenever you click something with the class, it runs the function to display gifs and then toggle them if clicked
+    $(document).on("click", ".gifButton", displayGifs);
+    $(document).on("click", ".gif", toggleGif)
+    makeButtons();
 
 }); // end of document ready
