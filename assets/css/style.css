@@ -1,6 +1,10 @@
 body {
-	background: #555555;
+	background: #effdbb;
 	margin-top: 10px;
+}
+
+#gif-dump {
+	background: #17f00f;
 }
 
 .gifButton {
@@ -10,4 +14,10 @@ body {
 .gifItem {
 	display: inline-block;
 	padding: 20px;
+}
+
+.gif {
+	background: #006900;
+	padding: 10px;
+	border-radius: 25px;
 }
