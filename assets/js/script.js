@@ -21,13 +21,16 @@ $(document).ready(function() {
                 // set each of the attributes equal to one of the two links
                 // set the src equal to the data state just like in the click function at the bottom
                 image.addClass("gif");
-                image.attr("src", response.data[i].images.fixed_height.url);
+                image.attr("data-state", "still");
+                image.attr("data-still", response.data[i].images.fixed_height_still.url);
+                image.attr("data-animate", response.data[i].images.fixed_height.url);
+                image.attr("src", response.data[i].images.fixed_height_still.url);
                 gifDiv.append(p);
                 gifDiv.append(image);
 
                 $("#gif-dump").prepend(gifDiv);
             }
-             // end of done
+            // end of done
         });
     } // end of displayGifs
 
@@ -56,20 +59,37 @@ $(document).ready(function() {
         makeButtons();
     });
 
-    // whenever you click something with the class .gif, it runs the function to display gifs searched with the text in the button
+    // whenever you click something with the class .gifButton, it runs the function to display gifs searched with the text in the button
     $(document).on("click", ".gifButton", displayGifs);
     makeButtons();
 
     // change pause or play gif on click
-    $(".gif").on("click"), function() {
-        var state = $(this).attr('data-state');
-        if (state === "still") {
-            $(this).attr("src", $(this).attr("data-animate"));
-            $(this).attr("data-state", "animate");
-        } else {
-            $(this).attr("src", $(this).attr("data-still"));
-            $(this).attr("data-state", "still");
-        }
-    } // of of pause gif
+    $(".gif").on("click",
+        function() {
+            var state = $(this).data('state');
+            console.log(state);
+            if (state === "still") {
+                $(this).attr("src", $(this).data("animate"));
+                $(this).attr("data-state", "animate");
+            } else {
+                $(this).attr("src", $(this).data("still"));
+                $(this).attr("data-state", "still");
+            }
+            console.log(state);
+        }); // end of of pause gif
+
+    // $(".gif").on("click",
+    //     function() {
+    //         var state = $(this).attr('data-state');
+    //         console.log(state);
+    //         if (state === "still") {
+    //             $(this).attr("src", $(this).attr("data-animate"));
+    //             $(this).attr("data-state", "animate");
+    //         } else {
+    //             $(this).attr("src", $(this).attr("data-still"));
+    //             $(this).attr("data-state", "still");
+    //         }
+    //         console.log(state);
+    //     }); // end of of pause gif
 
 }); // end of document ready
